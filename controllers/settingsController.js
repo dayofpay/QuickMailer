@@ -6,3 +6,5 @@ router.get('/',async(req,res) => {
         layout: 'default',
     })
 })
+
+module.exports = router;
