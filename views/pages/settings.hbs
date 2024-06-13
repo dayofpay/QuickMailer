@@ -1,43 +1,4 @@
-  <aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
-      <div class="p-6">
-          <a href="index.html" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Admin</a>
-          <button
-              class="w-full bg-white cta-btn font-semibold py-2 mt-5 rounded-br-lg rounded-bl-lg rounded-tr-lg shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
-              <i class="fas fa-plus mr-3"></i> New Report
-          </button>
-      </div>
-      <nav class="text-white text-base font-semibold pt-3">
-          <a href="index.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
-              <i class="fas fa-tachometer-alt mr-3"></i>
-              Dashboard
-          </a>
-          <a href="blank.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
-              <i class="fas fa-sticky-note mr-3"></i>
-              Blank Page
-          </a>
-          <a href="tables.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
-              <i class="fas fa-table mr-3"></i>
-              Tables
-          </a>
-          <a href="forms.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
-              <i class="fas fa-align-left mr-3"></i>
-              Forms
-          </a>
-          <a href="tabs.html" class="flex items-center active-nav-link text-white py-4 pl-6 nav-item">
-              <i class="fas fa-tablet-alt mr-3"></i>
-              Tabbed Content
-          </a>
-          <a href="calendar.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
-              <i class="fas fa-calendar mr-3"></i>
-              Calendar
-          </a>
-      </nav>
-      <a href="#"
-          class="absolute w-full upgrade-btn bottom-0 active-nav-link text-white flex items-center justify-center py-4">
-          <i class="fas fa-arrow-circle-up mr-3"></i>
-          Upgrade to Pro!
-      </a>
-  </aside>
+{{> sidetab}}
 
   <div class="relative w-full flex flex-col h-screen overflow-y-hidden">
       <!-- Desktop Header -->
@@ -120,26 +81,19 @@
 
       <div class="w-full h-screen overflow-x-hidden border-t flex flex-col">
           <main class="w-full flex-grow p-6">
-              <h1 class="text-3xl text-black pb-6">Tabbed Content</h1>
+              <h1 class="text-3xl text-black pb-6">Settings</h1>
 
               <div class="w-full mt-6" x-data="{ openTab: 1 }">
                   <div>
                       <ul class="flex border-b">
                           <li class="-mb-px mr-1" @click="openTab = 1">
                               <a :class="openTab === 1 ? 'border-l border-t border-r rounded-t text-blue-700 font-semibold' : 'text-blue-500 hover:text-blue-800'"
-                                  class="bg-white inline-block py-2 px-4 font-semibold" href="#">SMTP Settings</a>
+                                  class="bg-white inline-block py-2 px-4 font-semibold" href="#">Manage Servers</a>
                           </li>
                           <li class="mr-1" @click="openTab = 2">
                               <a :class="openTab === 2 ? 'border-l border-t border-r rounded-t text-blue-700 font-semibold' : 'text-blue-500 hover:text-blue-800'"
-                                  class="bg-white inline-block py-2 px-4 font-semibold" href="#">Tab 2</a>
-                          </li>
-                          <li class="mr-1" @click="openTab = 3">
-                              <a :class="openTab === 3 ? 'border-l border-t border-r rounded-t text-blue-700 font-semibold' : 'text-blue-500 hover:text-blue-800'"
-                                  class="bg-white inline-block py-2 px-4 font-semibold" href="#">Tab 3</a>
-                          </li>
-                          <li class="mr-1" @click="openTab = 4">
-                              <a :class="openTab === 4 ? 'border-l border-t border-r rounded-t text-blue-700 font-semibold' : 'text-blue-500 hover:text-blue-800'"
-                                  class="bg-white inline-block py-2 px-4 font-semibold" href="#">Tab 4</a>
+                                  class="bg-white inline-block py-2 px-4 font-semibold" href="#">Manage Email
+                                  Templates</a>
                           </li>
                       </ul>
                   </div>
@@ -159,62 +113,201 @@
                                   <div class="">
                                       <label class="block text-sm text-gray-600" for="server_name">Server Name</label>
                                       <input class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" id="server_name"
-                                          name="server_name" type="text" required="" placeholder="Server Name" aria-label="Server Name">
+                                          name="server_name" type="text" required="" placeholder="Server Name"
+                                          aria-label="Server Name">
                                   </div>
                                   <div class="mt-2">
                                       <label class="block text-sm text-gray-600" for="server_host">Server Host</label>
-                                      <input class="w-full px-5  py-4 text-gray-700 bg-gray-200 rounded" id="server_host"
-                                          name="server_host" type="text" required="" placeholder="Example: smtp.google.com"
-                                          aria-label="server_host">
+                                      <input class="w-full px-5  py-4 text-gray-700 bg-gray-200 rounded"
+                                          id="server_host" name="server_host" type="text" required=""
+                                          placeholder="Example: smtp.google.com" aria-label="server_host">
                                   </div>
                                   <div class="mt-2">
-                                      <label class="block text-sm text-gray-600" for="server_username">SMTP Username</label>
-                                      <input class="w-full px-5  py-4 text-gray-700 bg-gray-200 rounded" id="server_username"
-                                          name="server_username" type="text" required="" placeholder="Example: hello@my-company.com"
-                                          aria-label="server_username">
+                                      <label class="block text-sm text-gray-600" for="server_username">SMTP
+                                          Username</label>
+                                      <input class="w-full px-5  py-4 text-gray-700 bg-gray-200 rounded"
+                                          id="server_username" name="server_username" type="text" required=""
+                                          placeholder="Example: hello@my-company.com" aria-label="server_username">
                                   </div>
 
                                   <div class="mt-2">
-                                      <label class="block text-sm text-gray-600" for="server_pass">Server Password</label>
-                                      <input class="w-full px-5  py-4 text-gray-700 bg-gray-200 rounded" id="server_pass"
-                                          name="server_pass" type="text" required="" placeholder="Example: password123"
-                                          aria-label="server_pass">
+                                      <label class="block text-sm text-gray-600" for="server_pass">Server
+                                          Password</label>
+                                      <input class="w-full px-5  py-4 text-gray-700 bg-gray-200 rounded"
+                                          id="server_pass" name="server_pass" type="text" required=""
+                                          placeholder="Example: password123" aria-label="server_pass">
                                   </div>
                                   <div class="mt-2">
-                                      <label class="block text-sm text-gray-600" for="server_from_email">SMTP From Email</label>
-                                      <input class="w-full px-5  py-4 text-gray-700 bg-gray-200 rounded" id="server_from_email"
-                                          name="server_from_email" type="text" required="" placeholder="The email that you will use for sending emails"
+                                      <label class="block text-sm text-gray-600" for="server_from_email">SMTP From
+                                          Email</label>
+                                      <input class="w-full px-5  py-4 text-gray-700 bg-gray-200 rounded"
+                                          id="server_from_email" name="server_from_email" type="text" required=""
+                                          placeholder="The email that you will use for sending emails"
                                           aria-label="server_from_email">
                                   </div>
                                   <div class="mt-2">
                                       <label class="block text-sm text-gray-600" for="server_port">SMTP Port</label>
-                                      <input class="w-full px-5  py-4 text-gray-700 bg-gray-200 rounded" id="server_port"
-                                          name="server_port" type="text" required="" placeholder="SMTP Port"
-                                          aria-label="server_port">
+                                      <input class="w-full px-5  py-4 text-gray-700 bg-gray-200 rounded"
+                                          id="server_port" name="server_port" type="text" required=""
+                                          placeholder="SMTP Port" aria-label="server_port">
                                   </div>
                                   <div class="mt-6">
                                       <button class="px-4 py-1 text-white font-light tracking-wider bg-gray-900 rounded"
-                                         id="createServer" type="submit">Submit</button>
+                                          id="createServer" type="submit">Submit</button>
                                   </div>
                               </form>
+                              <div class="w-full mt-12">
+                                  <p class="text-xl pb-3 flex items-center">
+                                      <svg class="svg-inline--fa fa-list fa-w-16 mr-3" aria-hidden="true"
+                                          focusable="false" data-prefix="fas" data-icon="list" role="img"
+                                          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
+                                          <path fill="currentColor"
+                                              d="M80 368H16a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16v-64a16 16 0 0 0-16-16zm0-320H16A16 16 0 0 0 0 64v64a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16zm0 160H16a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16v-64a16 16 0 0 0-16-16zm416 176H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z">
+                                          </path>
+                                      </svg><!-- <i class="fas fa-list mr-3"></i> --> Server List
+                                  </p>
+                                  <div class="bg-white overflow-auto">
+                                      <table class="text-left w-full border-collapse">
+                                          <!--Border collapse doesn't work on this site yet but it's available in newer tailwind versions -->
+                                          <thead>
+                                              <tr>
+                                                  <th
+                                                      class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                                                      Server ID</th>
+                                                  <th
+                                                      class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                                                      Server Name</th>
+                                                  <th
+                                                      class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                                                      Action</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                              {{#each serverList as |server|}}
+                                              <tr class="hover:bg-grey-lighter">
+                                                  <td class="py-4 px-6 border-b border-grey-light">{{server.server_id}}
+                                                  </td>
+                                                  <td class="py-4 px-6 border-b border-grey-light">
+                                                      {{server.server_name}}</td>
+                                                  <td class="py-4 px-6 border-b border-grey-light">
+                                                      <button
+                                                          class="deleteBtn bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+                                                          data-server-id="{{server.server_id}}">
+                                                          Delete
+                                                      </button>
+                                                  </td>
+                                              </tr>
+                                              {{/each}}
+                                          </tbody>
+                                      </table>
+                                  </div>
+                              </div>
                           </div>
                       </div>
                       <div id="" class="" x-show="openTab === 2">
-                        tab2
-                      </div>
-                      <div id="" class="" x-show="openTab === 3">
-                        tab3
-                      </div>
-                      <div id="" class="" x-show="openTab === 4">
-                        tab4
+                          <p class="text-xl pb-6 flex items-center">
+                              <svg class="svg-inline--fa fa-list fa-w-16 mr-3" aria-hidden="true" focusable="false"
+                                  data-prefix="fas" data-icon="list" role="img" xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 512 512" data-fa-i2svg="">
+                                  <path fill="currentColor"
+                                      d="M80 368H16a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16v-64a16 16 0 0 0-16-16zm0-320H16A16 16 0 0 0 0 64v64a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16zm0 160H16a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16v-64a16 16 0 0 0-16-16zm416 176H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z">
+                                  </path>
+                              </svg><!-- <i class="fas fa-list mr-3"></i> --> Manage Email Templates
+                          </p>
+                          <div class="leading-loose">
+                              <form class="p-10 bg-white rounded shadow-xl" id="templateForm">
+                                  <div class="">
+                                      <label class="block text-sm text-gray-600" for="template_name">Template
+                                          Name</label>
+                                      <input class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
+                                          id="template_name" name="template_name" type="text" required=""
+                                          placeholder="Template Name" aria-label="Template Name">
+                                  </div>
+                                  <div class="mt-2">
+                                      <label class="block text-sm text-gray-600" for="template_subject">Template
+                                          Subject</label>
+                                      <input class="w-full px-5  py-4 text-gray-700 bg-gray-200 rounded"
+                                          id="template_subject" name="template_subject" type="text" required=""
+                                          placeholder="Example: 🚀 Checkout our new product !"
+                                          aria-label="template_subject">
+                                  </div>
+                                  <div class="mt-2">
+                                      <label class="block text-sm text-gray-600" for="content">Template
+                                          Content</label>
+                                      <input class="w-full px-5  py-4 text-gray-700 bg-gray-200 rounded"
+                                          id="template_content" name="template_content" type="text" required=""
+                                          placeholder="Example: <p>This is test message</p>"
+                                          aria-label="template_content">
+                                  </div>
+
+                                  <div class="mt-2">
+                                      <div class="p-4 bg-white rounded shadow-md">
+                                          <label class="inline-flex items-center">
+                                              <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600" id="is_html"
+                                                  checked>
+                                              <span class="ml-2 text-gray-700">Flag template content as HTML Type</span>
+                                          </label>
+                                      </div>
+                                  </div>
+
+                                  <div class="mt-6">
+                                      <button class="px-4 py-1 text-white font-light tracking-wider bg-gray-900 rounded"
+                                          id="createServer" type="submit">Submit</button>
+                                  </div>
+                              </form>
+                              <div class="w-full mt-12">
+                                  <p class="text-xl pb-3 flex items-center">
+                                      <svg class="svg-inline--fa fa-list fa-w-16 mr-3" aria-hidden="true"
+                                          focusable="false" data-prefix="fas" data-icon="list" role="img"
+                                          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
+                                          <path fill="currentColor"
+                                              d="M80 368H16a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16v-64a16 16 0 0 0-16-16zm0-320H16A16 16 0 0 0 0 64v64a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16zm0 160H16a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16v-64a16 16 0 0 0-16-16zm416 176H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z">
+                                          </path>
+                                      </svg><!-- <i class="fas fa-list mr-3"></i> --> Template List
+                                  </p>
+                                  <div class="bg-white overflow-auto">
+                                      <table class="text-left w-full border-collapse">
+                                          <!--Border collapse doesn't work on this site yet but it's available in newer tailwind versions -->
+                                          <thead>
+                                              <tr>
+                                                  <th
+                                                      class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                                                      Template ID</th>
+                                                  <th
+                                                      class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                                                      Template Name</th>
+                                                  <th
+                                                      class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                                                      Action</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                              {{#each templateList as |template|}}
+                                              <tr class="hover:bg-grey-lighter">
+                                                  <td class="py-4 px-6 border-b border-grey-light">{{template.template_id}}
+                                                  </td>
+                                                  <td class="py-4 px-6 border-b border-grey-light">
+                                                      {{template.template_name}}</td>
+                                                  <td class="py-4 px-6 border-b border-grey-light">
+                                                      <button
+                                                          class="deleteBtn-template bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+                                                          data-template-id="{{template.template_id}}">
+                                                          Delete
+                                                      </button>
+                                                  </td>
+                                              </tr>
+                                              {{/each}}
+                                          </tbody>
+                                      </table>
+                                  </div>
+                              </div>
+                          </div>
                       </div>
                   </div>
               </div>
           </main>
 
-          <footer class="w-full bg-white text-right p-4">
-              Built by <a target="_blank" href="https://davidgrzyb.com" class="underline">David Grzyb</a>.
-          </footer>
+
       </div>
 
   </div>
@@ -226,50 +319,210 @@
       integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
   {{> scripts/swal}}
 
-<script>
-    const serverForm = document.getElementById('serverForm');
-    serverForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+  <script>
+      const serverForm = document.getElementById('serverForm');
+      serverForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
 
-        const formData = new FormData(serverForm);
-        const data = {
-            server_name: formData.get('server_name'),
-            server_host: formData.get('server_host'),
-            server_port: formData.get('server_port'),
-            server_username: formData.get('server_username'),
-            server_password: formData.get('server_pass'),
-            server_from_email: formData.get('server_from_email')
-        };
+          const formData = new FormData(serverForm);
+          const data = {
+              server_name: formData.get('server_name'),
+              server_host: formData.get('server_host'),
+              server_port: formData.get('server_port'),
+              server_username: formData.get('server_username'),
+              server_password: formData.get('server_pass'),
+              server_from_email: formData.get('server_from_email')
+          };
 
-        try {
-            const response = await fetch('/api/servers/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
+          try {
+              const response = await fetch('/api/servers/create', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(data)
+              });
 
-            const result = await response.json();
-            if (result.hasError) {
-                Swal.fire({
-                    title: 'Error!',
-                    text: result.errorData,
-                    icon: 'error'
-                });
-            } else {
-                Swal.fire({
-                    title: 'Success!',
-                    text: result.message,
-                    icon: 'success'
-                });
-            }
-        } catch (error) {
-            Swal.fire({
-                title: 'Error!',
-                text: 'An error occurred while creating the server.',
-                icon: 'error'
-            });
-        }
-    });
-</script>
+              const result = await response.json();
+              if (result.hasError) {
+                  Swal.fire({
+                      title: 'Error!',
+                      text: result.errorData,
+                      icon: 'error'
+                  });
+              } else {
+                  Swal.fire({
+                      title: 'Success!',
+                      text: result.message,
+                      icon: 'success'
+                  });
+              }
+          } catch (error) {
+              Swal.fire({
+                  title: 'Error!',
+                  text: 'An error occurred while creating the server.',
+                  icon: 'error'
+              });
+          }
+      });
+  </script>
+    <script>
+      const templateForm = document.getElementById('templateForm');
+      templateForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          const formData = new FormData(templateForm);
+          const data = {
+              template_name: formData.get('template_name'),
+              template_subject: formData.get('template_subject'),
+              template_content: formData.get('template_content'),
+              is_html: document.getElementById('is_html').checked, 
+
+          };
+
+          try {
+              const response = await fetch('/api/templates/create', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(data)
+              });
+
+              const result = await response.json();
+              if (result.hasError) {
+                  Swal.fire({
+                      title: 'Error!',
+                      text: result.errorData,
+                      icon: 'error'
+                  });
+              } else {
+                  Swal.fire({
+                      title: 'Success!',
+                      text: result.message,
+                      icon: 'success'
+                  });
+              }
+          } catch (error) {
+              Swal.fire({
+                  title: 'Error!',
+                  text: 'An error occurred while creating the server.',
+                  icon: 'error'
+              });
+          }
+      });
+  </script>
+  <script>
+      document.addEventListener('DOMContentLoaded', () => {
+          const deleteButtons = document.querySelectorAll('.deleteBtn');
+
+          deleteButtons.forEach(button => {
+              button.addEventListener('click', async (e) => {
+                  const serverId = e.target.getAttribute('data-server-id');
+
+                  const confirm = await Swal.fire({
+                      title: 'Are you sure?',
+                      text: "You won't be able to revert this!",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#3085d6',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Yes, delete it!'
+                  });
+
+                  if (confirm.isConfirmed) {
+                      try {
+                          const response = await fetch('/api/servers/delete', {
+                              method: 'DELETE',
+                              headers: {
+                                  'Content-Type': 'application/json'
+                              },
+                              body: JSON.stringify({
+                                  server_id: serverId
+                              })
+                          });
+
+                          const result = await response.json();
+                          if (result.hasError) {
+                              Swal.fire({
+                                  title: 'Error!',
+                                  text: result.errorData,
+                                  icon: 'error'
+                              });
+                          } else {
+                              Swal.fire({
+                                  title: 'Deleted!',
+                                  text: result.message,
+                                  icon: 'success'
+                              });
+                              e.target.closest('tr').remove();
+                          }
+                      } catch (error) {
+                          Swal.fire({
+                              title: 'Error!',
+                              text: 'An error occurred while deleting the server.',
+                              icon: 'error'
+                          });
+                      }
+                  }
+              });
+          });
+      });
+  </script>
+  <script>
+      document.addEventListener('DOMContentLoaded', () => {
+          const deleteButtons = document.querySelectorAll('.deleteBtn-template');
+
+          deleteButtons.forEach(button => {
+              button.addEventListener('click', async (e) => {
+                  const templateId = e.target.getAttribute('data-template-id');
+
+                  const confirm = await Swal.fire({
+                      title: 'Are you sure?',
+                      text: "You won't be able to revert this!",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#3085d6',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Yes, delete it!'
+                  });
+
+                  if (confirm.isConfirmed) {
+                      try {
+                          const response = await fetch('/api/templates/delete', {
+                              method: 'DELETE',
+                              headers: {
+                                  'Content-Type': 'application/json'
+                              },
+                              body: JSON.stringify({
+                                  template_id: templateId,
+                              })
+                          });
+
+                          const result = await response.json();
+                          if (result.hasError) {
+                              Swal.fire({
+                                  title: 'Error!',
+                                  text: result.errorData,
+                                  icon: 'error'
+                              });
+                          } else {
+                              Swal.fire({
+                                  title: 'Deleted!',
+                                  text: result.message,
+                                  icon: 'success'
+                              });
+                              e.target.closest('tr').remove();
+                          }
+                      } catch (error) {
+                          Swal.fire({
+                              title: 'Error!',
+                              text: 'An error occurred while deleting the template.',
+                              icon: 'error'
+                          });
+                      }
+                  }
+              });
+          });
+      });
+  </script>
