@@ -40,7 +40,7 @@ const { sync } = require('./database/sync.js');
 
 
  // ## End Routes Setup ## //
-app.listen(config.getProperty('APP_PORT'), (req,res) => {
-    sync();
+app.listen(config.getProperty('APP_PORT'), async(req,res) => {
+    await sync();
     console.log('QuickMail Notification | Site is running on port :', config.getProperty('APP_PORT'));
 });

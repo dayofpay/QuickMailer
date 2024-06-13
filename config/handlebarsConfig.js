@@ -71,12 +71,12 @@ const handlebarsConfig = (app) => {
     });
     app.engine('hbs', handlebars.engine({
         extname: '.hbs',
-        defaultLayout : 'main',
+        defaultLayout : 'default',
     }));
     
     app.set('view engine', 'hbs');
     app.set('views', 'views');
-
+    console.info('[INFO] Handlebars Configured !')
     // ! Handlebars config !
 };
 
