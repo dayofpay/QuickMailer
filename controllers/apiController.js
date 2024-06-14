@@ -1,71 +1,140 @@
+const router = require('express').Router();
 const { sendMail } = require('../mail/mail_system');
-const { createServer, deleteServerById, createTemplate, deleteTemplateById, getServerById } = require('../services/apiServices');
+const {
+    createServer,
+    deleteServerById,
+    createTemplate,
+    deleteTemplateById,
+    getServerById
+} = require('../services/apiServices');
 const { getTemplateById } = require('../services/mailServices');
 
-const router = require('express').Router();
+// Middleware for basic validation of required fields
+const validateFields = (req, res, fields) => {
+    for (const field of fields) {
+        if (!req.body[field]) {
+            return res.status(400).json({ hasError: true, errorData: `${field} is required` });
+        }
+    }
+    return null; // No validation errors
+};
 
 router.post('/servers/create', async (req, res) => {
     const { server_name, server_host, server_port, server_username, server_password, server_from_email } = req.body;
-    console.log(req.body);
+    
     // Basic validation
-    if (!server_name || !server_host || !server_port || !server_username || !server_password || !server_from_email) {
-        return res.status(400).json({ hasError: true, errorData: 'All fields are required' });
+    const validationError = validateFields(req, res, ['server_name', 'server_host', 'server_port', 'server_username', 'server_password', 'server_from_email']);
+    if (validationError) {
+        return validationError;
     }
 
-
-    const CREATE_SERVER = await createServer(server_name,server_host,server_port,server_username,server_password,server_from_email);
-    return CREATE_SERVER.hasError === true ? 
-    res.status(500).json({hasError:true, message: `There was error while trying to create server`,errorData: `${CREATE_SERVER.errorData}`}) 
-     :     res.status(200).json({message: 'Server Created successfully'}) 
+    try {
+        const CREATE_SERVER = await createServer(server_name, server_host, server_port, server_username, server_password, server_from_email);
+        
+        if (CREATE_SERVER.hasError) {
+            return res.status(500).json({ hasError: true, message: 'Error creating server', errorData: CREATE_SERVER.errorData });
+        }
+        
+        return res.status(200).json({ message: 'Server created successfully' });
+    } catch (error) {
+        console.error('Error creating server:', error);
+        return res.status(500).json({ hasError: true, message: 'Server creation failed', errorData: error.message });
+    }
 });
+
 router.delete('/servers/delete', async (req, res) => {
     const { server_id } = req.body;
-
-    if (!server_id) {
-        return res.status(400).json({ hasError: true, errorData: 'Server ID is required' });
-    }
-    const deleteServer = await deleteServerById(server_id);
-    return deleteServer.hasError === false ? res.status(200).json({ hasError: false, message: 'Server deleted successfully' }) :res.status(500).json({ hasError: true, errorData: 'An error occurred while deleting the server' }); ;
-});
-router.post('/templates/create',async(req,res) => {
-    const { template_name, template_subject, template_content,is_html } = req.body;
+    
     // Basic validation
-    if (!template_name || !template_subject || !template_content) {
-        return res.status(400).json({ hasError: true, errorData: 'All fields are required' });
+    const validationError = validateFields(req, res, ['server_id']);
+    if (validationError) {
+        return validationError;
     }
-    const CREATE_TEMPLATE = createTemplate(template_name,template_subject,template_content,is_html);
-    if(CREATE_TEMPLATE.hasError === true){
-        return res.status(500).json({hasError:true, message: `There was error while trying to create template`,errorData: `${CREATE_TEMPLATE.errorData}`})
+
+    try {
+        const deleteServer = await deleteServerById(server_id);
+        
+        if (deleteServer.hasError) {
+            return res.status(500).json({ hasError: true, message: 'Error deleting server', errorData: deleteServer.errorData });
+        }
+        
+        return res.status(200).json({ message: 'Server deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting server:', error);
+        return res.status(500).json({ hasError: true, message: 'Server deletion failed', errorData: error.message });
     }
-    return res.status(200).json({message: 'Template Created successfully'})
-})
+});
+
+router.post('/templates/create', async (req, res) => {
+    const { template_name, template_subject, template_content, is_html } = req.body;
+    
+    // Basic validation
+    const validationError = validateFields(req, res, ['template_name', 'template_subject', 'template_content']);
+    if (validationError) {
+        return validationError;
+    }
+
+    try {
+        const CREATE_TEMPLATE = await createTemplate(template_name, template_subject, template_content, is_html);
+        
+        if (CREATE_TEMPLATE.hasError) {
+            return res.status(500).json({ hasError: true, message: 'Error creating template', errorData: CREATE_TEMPLATE.errorData });
+        }
+        
+        return res.status(200).json({ message: 'Template created successfully' });
+    } catch (error) {
+        console.error('Error creating template:', error);
+        return res.status(500).json({ hasError: true, message: 'Template creation failed', errorData: error.message });
+    }
+});
+
 router.delete('/templates/delete', async (req, res) => {
     const { template_id } = req.body;
-
-    if (!template_id) {
-        return res.status(400).json({ hasError: true, errorData: 'Template ID is required' });
+    
+    // Basic validation
+    const validationError = validateFields(req, res, ['template_id']);
+    if (validationError) {
+        return validationError;
     }
-    const deleteTemplate = await deleteTemplateById(template_id);
-    return deleteTemplate.hasError === false ? res.status(200).json({ hasError: false, message: 'Template deleted successfully' }) :res.status(500).json({ hasError: true, errorData: 'An error occurred while deleting the template' }); ;
+
+    try {
+        const deleteTemplate = await deleteTemplateById(template_id);
+        
+        if (deleteTemplate.hasError) {
+            return res.status(500).json({ hasError: true, message: 'Error deleting template', errorData: deleteTemplate.errorData });
+        }
+        
+        return res.status(200).json({ message: 'Template deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting template:', error);
+        return res.status(500).json({ hasError: true, message: 'Template deletion failed', errorData: error.message });
+    }
 });
-
-
 
 router.post('/mails/send', async (req, res) => {
-    // Parse the mail data
-    const {receiver_email,template,server} = req.body;
-
-    // parse the mail data from the server
-
-    const template_data = (await getTemplateById(template)).data;
-
-    const server_data = (await getServerById(server)).data;
-
-    const SEND_EMAIL = await sendMail(server_data,server_data.server_from_email,receiver_email,template_data.template_subject,template_data.template_content,template_data.template_content_is_html);
-    if(SEND_EMAIL.hasError === true){
-        return res.status(500).json({hasError:true, message: `There was error while trying to send email`,errorData: `${SEND_EMAIL.errorData}`})
+    const { receiver_email, template, server } = req.body;
+    
+    // Basic validation
+    const validationError = validateFields(req, res, ['receiver_email', 'template', 'server']);
+    if (validationError) {
+        return validationError;
     }
-    return res.status(200).json({message: 'Email Sent successfully'})
 
+    try {
+        const templateData = (await getTemplateById(template)).data;
+        const serverData = (await getServerById(server)).data;
+        
+        const SEND_EMAIL = await sendMail(serverData, serverData.server_from_email, receiver_email, templateData.template_subject, templateData.template_content, templateData.template_content_is_html);
+        
+        if (SEND_EMAIL.hasError) {
+            return res.status(500).json({ hasError: true, message: 'Error sending email', errorData: SEND_EMAIL.errorData });
+        }
+        
+        return res.status(200).json({ message: 'Email sent successfully' });
+    } catch (error) {
+        console.error('Error sending email:', error);
+        return res.status(500).json({ hasError: true, message: 'Email sending failed', errorData: error.message });
+    }
 });
+
 module.exports = router;
