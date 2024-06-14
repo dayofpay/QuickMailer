@@ -7,7 +7,7 @@ router.get('/',async(req,res) => {
     const templateList = await getTemplateList();
 
     res.render('pages/settings',{
-        pageName: 'Настройки',
+        pageName: 'Settings',
         layout: 'default',
         serverList,
         templateList : templateList.templateList,
