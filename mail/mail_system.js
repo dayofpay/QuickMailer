@@ -2,54 +2,59 @@ const nodemailer = require('nodemailer');
 const config = require('../utils/config');
 const { createMailLog } = require('../services/mailServices');
 
-
-exports.sendMail = async(server_data,sender_name, receivers, subject, text, html) => {
+exports.sendMail = async (serverData, senderName, receivers, subject, text, html) => {
     const transporter = nodemailer.createTransport({
-        host: server_data.server_host,
-        port: server_data.server_port,
+        host: serverData.server_host,
+        port: serverData.server_port,
         secure: true,
         auth: {
-          user: server_data.server_username,
-          pass: server_data.server_password,
+            user: serverData.server_username,
+            pass: serverData.server_password,
         },
-      });
-    try{
-        let MAIL_CONTENT = {};
-    
-        html === 1 ? await transporter.sendMail({
-            from: `"${sender_name}" <${sender_name}>`, // sender address
+    });
+
+    try {
+        let mailOptions = {
+            from: `"${senderName}" <${senderName}>`,
             to: receivers,
             subject: subject,
-            html: text,
-          }) : await transporter.sendMail({
-            from: `"${sender_name}" <${sender_name}>`, // sender address
-            to: receivers, // list of receivers
-            subject: subject, // Subject line
-            text: text, // plain text body
-          });
-          // check if we should log the mail
-          const LOG_MAIL = config.getProperty('INSERT_EMAIL_LOGS');
-          if(LOG_MAIL === 'true'){
-              MAIL_CONTENT = {
-                template_used : subject,
+        };
+
+        if (html) {
+            mailOptions.html = text;
+        } else {
+            mailOptions.text = text;
+        }
+
+        // Send mail using transporter
+        await transporter.sendMail(mailOptions);
+
+        // Log the mail if logging is enabled
+        const logMail = config.getProperty('INSERT_EMAIL_LOGS') === 'true';
+        if (logMail) {
+            const mailLog = {
+                template_used: subject,
                 mail_status: 'SENT',
                 email: receivers,
-              }
-              await createMailLog(MAIL_CONTENT);
-          }
-        return {hasError: false, message: 'Mail Sent Successfully'};
-    }catch(error){
-        console.log(error);
-        const LOG_MAIL = config.getProperty('INSERT_EMAIL_LOGS');
-        if(LOG_MAIL === 'true'){
-            MAIL_CONTENT = {
-              template_used : subject,
-              mail_status: 'FAILED',
-              email: receivers,
-            }
-            await createMailLog(MAIL_CONTENT);
+            };
+            await createMailLog(mailLog);
         }
-        return {hasError: true, message: 'Mail Sent Failed',errorData: error}
+
+        return { hasError: false, message: 'Mail Sent Successfully' };
+    } catch (error) {
+        console.error('Error sending email:', error);
+
+        // Log the mail failure if logging is enabled
+        const logMail = config.getProperty('INSERT_EMAIL_LOGS') === 'true';
+        if (logMail) {
+            const mailLog = {
+                template_used: subject,
+                mail_status: 'FAILED',
+                email: receivers,
+            };
+            await createMailLog(mailLog);
+        }
+
+        return { hasError: true, message: 'Mail Sent Failed', errorData: error };
     }
-    
-}
+};
