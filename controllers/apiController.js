@@ -1,4 +1,6 @@
-const { createServer, deleteServerById, createTemplate, deleteTemplateById } = require('../services/apiServices');
+const { sendMail } = require('../mail/mail_system');
+const { createServer, deleteServerById, createTemplate, deleteTemplateById, getServerById } = require('../services/apiServices');
+const { getTemplateById } = require('../services/mailServices');
 
 const router = require('express').Router();
 
@@ -45,5 +47,25 @@ router.delete('/templates/delete', async (req, res) => {
     }
     const deleteTemplate = await deleteTemplateById(template_id);
     return deleteTemplate.hasError === false ? res.status(200).json({ hasError: false, message: 'Template deleted successfully' }) :res.status(500).json({ hasError: true, errorData: 'An error occurred while deleting the template' }); ;
+});
+
+
+
+router.post('/mails/send', async (req, res) => {
+    // Parse the mail data
+    const {receiver_email,template,server} = req.body;
+
+    // parse the mail data from the server
+
+    const template_data = (await getTemplateById(template)).data;
+
+    const server_data = (await getServerById(server)).data;
+
+    const SEND_EMAIL = await sendMail(server_data,server_data.server_from_email,receiver_email,template_data.template_subject,template_data.template_content,template_data.template_content_is_html);
+    if(SEND_EMAIL.hasError === true){
+        return res.status(500).json({hasError:true, message: `There was error while trying to send email`,errorData: `${SEND_EMAIL.errorData}`})
+    }
+    return res.status(200).json({message: 'Email Sent successfully'})
+
 });
 module.exports = router;

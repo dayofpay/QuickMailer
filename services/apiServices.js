@@ -77,3 +77,12 @@ exports.deleteTemplateById = async(id) => {
         return {hasError: true};
     }
 }
+
+exports.getServerById = async(id) => {
+    try{
+        const server = await SMTP.findOne({where: {server_id: id},raw:true});
+        return {hasError:false, data:server};
+    }catch(error){
+        return {hasError:true, errorData:error};
+    }
+}
