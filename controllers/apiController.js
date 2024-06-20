@@ -8,7 +8,8 @@ const {
     getServerById
 } = require('../services/apiServices');
 const { getTemplateById } = require('../services/mailServices');
-
+const { getProperty } = require('../utils/config');
+const Mails = require('../models/MailHistory');
 // Middleware for basic validation of required fields
 const validateFields = (req, res, fields) => {
     for (const field of fields) {
@@ -113,7 +114,14 @@ router.delete('/templates/delete', async (req, res) => {
 
 router.post('/mails/send', async (req, res) => {
     const { receiver_email, template, server } = req.body;
-    
+    // check if user disabled double sending of email to same receiver
+    const DOUBLE_SENDING_STATUS = getProperty('PREVENT_DOUBLE_SEND');
+    if(DOUBLE_SENDING_STATUS === 'true'){
+        const emailExists = await Mails.findOne({where: {email: receiver_email}});
+        if(emailExists){
+            return res.status(400).json({ hasError: true, errorData: 'Email already sent to this receiver' });
+        }
+    }
     // Basic validation
     const validationError = validateFields(req, res, ['receiver_email', 'template', 'server']);
     if (validationError) {
